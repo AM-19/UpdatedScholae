@@ -137,8 +137,8 @@ export class CardComponent implements OnInit {
       // this.recommendationService.checkIfUserCompletedBook("RaviBansal@kidsjoyment.com", bookTitle)
       .subscribe(data => {
         console.log("checkIfUserCompletedBook success on click of Read Book : ", data);
-        if (data === "Not completed book") {
           // this.recommendationService.addToRead("RaviBansal@kidsjoyment.com", bookTitle).subscribe(data => {
+        if (data === "Not completed book") {
           this.recommendationService.addToRead(sessionStorage.getItem("userName"), bookTitle).subscribe(data => {
             console.log("AddBookToReading successful : ", data);
           },
@@ -156,7 +156,6 @@ export class CardComponent implements OnInit {
         console.log("checkIfUserCompletedBook fails on click of Read Book : ", error);
         if (error.status === 200) {
           if (error.error.text === "Not completed book") {
-            // this.recommendationService.addToRead("RaviBansal@kidsjoyment.com", bookTitle).subscribe(data => {
             this.recommendationService.addToRead(sessionStorage.getItem("userName"), bookTitle).subscribe(data => {
               console.log("AddBookToReading successful : ", data);
             },

@@ -81,8 +81,7 @@ export class BookService {
       params:{
         userEmail:emailId,
         bookTitle:bookTitle
-      },
-	  responseType: 'text'
+      }
     })
     .pipe(catchError(this.errorHandler));
   }

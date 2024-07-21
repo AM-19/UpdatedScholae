@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError } from "rxjs/operators";
+import { catchError,map } from "rxjs/operators";
 import { throwError } from 'rxjs';
 
 
@@ -56,7 +56,7 @@ export class RecommendationService {
   }
 
   public checkIfFavourite(emailId: string, bookTitle: string) {
-    return this.httpClient.get<any>("http://localhost:8080/recommendationservice/api/v1/userfavourite",
+    return this.httpClient.get("http://localhost:8080/recommendationservice/api/v1/userfavourite",
       {
         params: {
           emailId: emailId,
@@ -68,7 +68,7 @@ export class RecommendationService {
   }
 
   public addToFavourites(emailId: string, bookTitle: string) {
-    return this.httpClient.post<any>("http://localhost:8080/recommendationservice/api/v1/favourite",bookTitle,
+    return this.httpClient.post("http://localhost:8080/recommendationservice/api/v1/favourite",bookTitle,
       {
         params: {
           emailId: emailId,
@@ -80,7 +80,7 @@ export class RecommendationService {
   }
 
   public removeFromFavourites(emailId: string, bookTitle: string) {
-    return this.httpClient.get<any>("http://localhost:8080/recommendationservice/api/v1/unfavourite",
+    return this.httpClient.get("http://localhost:8080/recommendationservice/api/v1/unfavourite",
       {
         params: {
           emailId: emailId,
@@ -92,7 +92,7 @@ export class RecommendationService {
   }
 
   public checkIfUserIsReadingBook(emailId: string, bookTitle: string) {
-    return this.httpClient.get<any>("http://localhost:8080/recommendationservice/api/v1/userreading",
+    return this.httpClient.get("http://localhost:8080/recommendationservice/api/v1/userreading",
       {
         params: {
           emailId: emailId,
@@ -104,7 +104,7 @@ export class RecommendationService {
   }
 
   public checkIfUserCompletedBook(emailId: string, bookTitle: string) {
-    return this.httpClient.get<any>("http://localhost:8080/recommendationservice/api/v1/usercompleted",
+    return this.httpClient.get("http://localhost:8080/recommendationservice/api/v1/usercompleted",
       {
         params: {
           emailId: emailId,
@@ -116,7 +116,7 @@ export class RecommendationService {
   }
 
   public addToRead(emailId: string, bookTitle: string) {
-    return this.httpClient.post<any>("http://localhost:8080/recommendationservice/api/v1/startreading",bookTitle,
+    return this.httpClient.post("http://localhost:8080/recommendationservice/api/v1/startreading",bookTitle,
       {
         params: {
           emailId: emailId,
@@ -128,7 +128,7 @@ export class RecommendationService {
   }
 
   public markBookAsCompleted(emailId: string, bookTitle: string) {
-    return this.httpClient.get<any>("http://localhost:8080/recommendationservice/api/v1/completed",
+    return this.httpClient.get("http://localhost:8080/recommendationservice/api/v1/completed",
       {
         params: {
           emailId: emailId,
@@ -140,17 +140,17 @@ export class RecommendationService {
   }
 
   public updateBookDownloads(bookTitle: string) {
-    return this.httpClient.put<any>("http://localhost:8080/recommendationservice/api/v1/updatedownloads", bookTitle,{responseType: 'text'})
+    return this.httpClient.put("http://localhost:8080/recommendationservice/api/v1/updatedownloads", bookTitle,{responseType: 'text'})
       .pipe(catchError(this.errorHandler));
   }
 
   public updateBookViews(bookTitle: string) {
-    return this.httpClient.put<any>("http://localhost:8080/recommendationservice/api/v1/updateviews", bookTitle,{responseType: 'text'})
+    return this.httpClient.put("http://localhost:8080/recommendationservice/api/v1/updateviews", bookTitle,{responseType: 'text'})
       .pipe(catchError(this.errorHandler));
   }
 
   public saveUserProgress(emailId: string, bookTitle: string,pageNumber: number) {
-    return this.httpClient.get<any>("http://localhost:8080/recommendationservice/api/v1/saveprogress",{
+    return this.httpClient.get("http://localhost:8080/recommendationservice/api/v1/saveprogress",{
       params:{
         emailId:emailId,
         bookTitle:bookTitle,
@@ -162,18 +162,21 @@ export class RecommendationService {
   }
 
   public returnUserProgress(emailId: string, bookTitle: string) {
-    return this.httpClient.get<any>("http://localhost:8080/recommendationservice/api/v1/progress",{
+    return this.httpClient.get("http://localhost:8080/recommendationservice/api/v1/progress",{
       params:{
         emailId:emailId,
         bookTitle:bookTitle
       },
 	  responseType: 'text'
     })
-      .pipe(catchError(this.errorHandler));
+      .pipe(
+		map(response => parseInt(response, 10)),
+		catchError(this.errorHandler)
+	  );
   }
 
   public getBookDescription(bookTitle: string) {
-    return this.httpClient.get<any>("http://localhost:8080/recommendationservice/api/v1/description",{
+    return this.httpClient.get("http://localhost:8080/recommendationservice/api/v1/description",{
       params:{
         bookTitle:bookTitle
       },

@@ -35,7 +35,7 @@ export class AuthService {
   }
 
   public changePassword(authUser: AuthUser) {
-    return this.httpClient.put<any>("http://localhost:8080/authservice/api/v1/changepassword", authUser,{responseType: 'text'})
+    return this.httpClient.put("http://localhost:8080/authservice/api/v1/changepassword", authUser,{responseType: 'text'})
       .pipe(catchError(this.errorHandler));
   }
 
